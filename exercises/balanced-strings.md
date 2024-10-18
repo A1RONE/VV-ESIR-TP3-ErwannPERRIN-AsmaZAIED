@@ -26,3 +26,31 @@ Use the project in [tp3-balanced-strings](../code/tp3-balanced-strings) to compl
 
 ## Answer
 
+1 -
+Nous avons partitionner le tableau en 2 blocs :
+- Type d'encapsulation :
+    : - simple / () ; {} ; []
+    : - encapsulation simple / ([])
+    : - double encapsulation / ([]{})
+    : - encapsulation^2 / ([{}])
+( On supposera que si la double encapsulation marche c'est pareil pour n-encapsulation. Et si la l'encapsulation^2 marche on valide l'encapsulation^n. )
+- Est balancé ? :
+    : - balancé
+    : - non balancé par la gauche
+    : - non balancé par la droite
+( On teste séparement la gauche et la droite car elles ne sont pas verifiée de la même manière dans le code. )
+
+Les cas etant facile a couvrir nous utiliserons MCC, soit tester si chaque type est balancé et non balancé à gauche ou a droite.
+
+2 -
+Nous avons evaluer la couverture en utilisant le plugin jacoco qui d'après ces résultat nous donnait une couverture de 27/28 en effet il ne nous manquait qu'un cas à tester :
+- le cas absurde ou on a un autre caractère que ceux prévus en fermeture
+: "(a" par exemple.
+Après avoir rajouter ce cas on avais bien tout couvert ce qui est cohérent puisqu'on a utiliser MCC.
+
+3 - 
+Comme nous avons utiliser MCC pour creer nos tests BCC est bien couvert.
+
+4 -
+En utilisans pit pour creer des mutations on obtient un score de 12/13.
+Néanmoins on peux considerer que c'est un 12/12 car l'erreur de viens pas de la fonction isBalanced que nous testons mais du constructeur que nous ne testons pas.

@@ -22,15 +22,14 @@ class DateTest {
     {
         // Partition
         // year < 0 / 0 / leap / common
-        // month 2 / 30d / 31d
-        // day : <29 / 29 / 30 / 31
+        // month 2 / 30d / 31d / <= 0 / > 12
+        // day : <29 / 29 / 30 / 31 / < 0
 
         // On utilise BCC
         // Cas de base 
         // year : leap = 2004
         // month : 31d = 12
         // day : 28
-
 
 
         boolean result = Date.isValidDate(28, 2, 2004);
@@ -47,6 +46,10 @@ class DateTest {
         assertTrue(result,"La date \'28/11/2004\' devrait être valide");
         result = Date.isValidDate(28, 2, 2004); // 2
         assertTrue(result,"La date \'28/2/2004\' devrait être valide");
+        result = Date.isValidDate(1, 13, 2004); 
+        assertFalse(result,"La date \'28/13/2004\' devrait être invalide");       
+        result = Date.isValidDate(1, -2, 2004); 
+        assertFalse(result,"La date \'28/-2/2004\' devrait être invalide");   
         // day
         result = Date.isValidDate(29, 12, 2004); // 29
         assertTrue(result,"La date \'29/12/2004\' devrait être valide");
@@ -54,6 +57,18 @@ class DateTest {
         assertTrue(result,"La date \'30/12/2004\' devrait être valide");
         result = Date.isValidDate(31, 12, 2004); // 31
         assertTrue(result,"La date \'31/12/2004\' devrait être valide");
+        result = Date.isValidDate(-1, 2, 2004);
+        assertFalse(result,"La date \'-1/2/2004\' devrait être invalide");   
+
+        // ajout
+        result = Date.isValidDate(29, 2, 2004); 
+        assertTrue(result,"La date \'29/2/2004\' devrait être valide");     
+        /*result = Date.isValidDate(29, 3, 2004); 
+        assertTrue(result,"La date \'29/3/2004\' devrait être valide");*/    
+        result = Date.isValidDate(29, 2, 2003); 
+        assertFalse(result,"La date \'29/2/2003\' devrait être invalide");
+        result = Date.isValidDate(31, 11, 2004); 
+        assertFalse(result,"La date \'31/11/2003\' devrait être invalide");                
 
     }
     
@@ -74,7 +89,7 @@ class DateTest {
     }
 
     @Test 
-    public void nextDate(){
+    public void nextDateTest(){
         //Partition
         // year < 0 / 0 / leap / common
         // month : 2 / 30d / 31d / 12 
@@ -125,6 +140,13 @@ class DateTest {
         result = date.nextDate();
         assertTrue(result.equals(new Date(30,12,2004)), "La date devrait être \'30/12/2004\' en l'occurence on a : \'"+result.getDate()+"\'");
 
+        //ajout
+        date = new Date(28, 2, 2003);
+        result = date.nextDate();
+        assertTrue(result.equals(new Date(1,3,2003)), "La date devrait être \'1/3/2004\' en l'occurence on a : \'"+result.getDate()+"\'");
+        date = new Date(28, 2, 2004);
+        result = date.nextDate();
+        assertTrue(result.equals(new Date(29,2,2004)), "La date devrait être \'1/3/2004\' en l'occurence on a : \'"+result.getDate()+"\'");
     }
 
     @Test
@@ -170,12 +192,119 @@ class DateTest {
         result = date.previousDate();
         assertTrue(result.equals(new Date(1,1,2004)), "La date devrait être \'1/1/2004\' en l'occurence on a : \'"+result.getDate()+"\'");
 
+        //added
+        date = new Date(1, 3, 2003);
+        result = date.previousDate();
+        assertTrue(result.equals(new Date(28,2,2003)), "La date devrait être \'28/2/2003\' en l'occurence on a : \'"+result.getDate()+"\'");
+
     }
 
     @Test
     public void compareToTest()
     {
-        // 
+        // month + day : m-month + last day ; m-month+1 + first day / m-month+1 + first day ; m-month + last day / same / other
+        // year : 0 ; other / < 0 ; < 0 / > 0 ; < 0 / > 0 ; > 0 / same / other
+
+        ///BCC
+        // month + day : same
+        // year : same
+
+        Date date1 = new Date(26,02,2004);
+        Date date2 = new Date(26,02,2004);
+        int result = date1.compareTo(date2);
+        int expected = 0;
+        assertTrue( result == expected, "Les dates devrait être égale mais elle renvoie : "+result);
+
+        // month+date
+        date1 = new Date(30,11,2004);
+        date2 = new Date(1,12,2004);
+        result = date1.compareTo(date2);
+        assertTrue( result < 0, "la comparaison des dates devrait être < 0 mais en l'ocurrance on a : "+result);
+        result = date2.compareTo(date1);
+        assertTrue( result > 0, "la comparaison des dates devrait être > 0 mais en l'ocurrance on a : "+result);
+        date1 = new Date(23,6,2004);
+        date2 = new Date(2,10,2004);
+        result = date1.compareTo(date2);
+        assertTrue( result < 0, "la comparaison des dates devrait être < 0 mais en l'ocurrance on a : "+result);
+        result = date2.compareTo(date1);
+        assertTrue( result > 0, "la comparaison des dates devrait être > 0 mais en l'ocurrance on a : "+result);
+
+        // year
+        date1 = new Date(30,11,2003);
+        date2 = new Date(30,11,2004);
+        result = date1.compareTo(date2);
+        assertTrue( result < 0, "la comparaison des dates devrait être < 0 mais en l'ocurrance on a : "+result);
+        result = date2.compareTo(date1);
+        assertTrue( result > 0, "la comparaison des dates devrait être > 0 mais en l'ocurrance on a : "+result);
+
+        date1 = new Date(30,11,0);
+        date2 = new Date(30,11,2004);
+        result = date1.compareTo(date2);
+        assertTrue( result < 0, "la comparaison des dates devrait être < 0 mais en l'ocurrance on a : "+result);
+        result = date2.compareTo(date1);
+        assertTrue( result > 0, "la comparaison des dates devrait être > 0 mais en l'ocurrance on a : "+result);
+
+        date1 = new Date(30,11,-1);
+        date2 = new Date(30,11,1);
+        result = date1.compareTo(date2);
+        assertTrue( result < 0, "la comparaison des dates devrait être < 0 mais en l'ocurrance on a : "+result);
+        result = date2.compareTo(date1);
+        assertTrue( result > 0, "la comparaison des dates devrait être > 0 mais en l'ocurrance on a : "+result);
+
+        date1 = new Date(30,11,-2004);
+        date2 = new Date(30,11,-2003);
+        result = date1.compareTo(date2);
+        assertTrue( result < 0, "la comparaison des dates devrait être < 0 mais en l'ocurrance on a : "+result);
+        result = date2.compareTo(date1);
+        assertTrue( result > 0, "la comparaison des dates devrait être > 0 mais en l'ocurrance on a : "+result);
+
+    }
+    @Test
+    public void approxToDaysTest()
+    {
+        int day = 1;
+        int month = 1;
+        int year = 1;
+        Date date = new Date(day,month,year);
+        int result = date.approxToDays();
+        int expected = day + 31 * (month + 12 * year);
+        assertEquals(result, expected, "Le resultat devrait être "+expected+" mais on a actuellement : "+result);
+    }
+    @Test
+    public void equalsTest()
+    {
+        // Partition
+        // year : same / different
+        // month : same / different
+        // day : same / different
+
+        //BCC
+        // year : same
+        // month : same
+        // day : same
+
+        Date date1 = new Date(30,11,10);
+        Date date2 = new Date(30,11,10);
+        boolean result = date1.equals(date2);
+        assertTrue(result, "Les deux dates devrait être identique mais ne le sont pas");
+
+        date1 = new Date(30,11,9);
+        date2 = new Date(30,11,10);
+        result = date1.equals(date2);
+        assertFalse(result, "Les deux dates devraient être différentes mais elles sont identiques.");
+
+        date1 = new Date(30,10,10);
+        date2 = new Date(30,11,10);
+        result = date1.equals(date2);
+        assertFalse(result, "Les deux dates devraient être différentes mais elles sont identiques.");
+
+        date1 = new Date(29,11,10);
+        date2 = new Date(30,11,10);
+        result = date1.equals(date2);
+        assertFalse(result, "Les deux dates devraient être différentes mais elles sont identiques.");
+
+
+
     }
 
 

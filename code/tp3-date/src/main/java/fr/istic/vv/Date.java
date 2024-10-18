@@ -32,7 +32,7 @@ class Date implements Comparable<Date> {
     }
 
     public static boolean isValidDate(int day, int month, int year) {
-        return day > 0 && ( ( day <= max_days[month - 1] ) || ( isLeapYear(year) && day == 29 ));
+        return month > 0 && month <= max_days.length && day > 0 && ( ( day <= max_days[month - 1] ) || ( isLeapYear(year) && day == 29 ));
     }
 
     public static boolean isLeapYear(int year) {

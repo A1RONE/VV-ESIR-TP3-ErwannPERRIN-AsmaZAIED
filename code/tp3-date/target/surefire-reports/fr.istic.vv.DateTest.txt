@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: fr.istic.vv.DateTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s - in fr.istic.vv.DateTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.162 s - in fr.istic.vv.DateTest

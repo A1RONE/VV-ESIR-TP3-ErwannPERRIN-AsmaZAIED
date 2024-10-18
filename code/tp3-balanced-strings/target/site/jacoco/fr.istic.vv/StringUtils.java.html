@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StringUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp3-balanced-strings</a> &gt; <a href="index.source.html" class="el_package">fr.istic.vv</a> &gt; <span class="el_source">StringUtils.java</span></div><h1>StringUtils.java</h1><pre class="source lang-java linenums">package fr.istic.vv;
+
+import java.util.Stack;
+
+public class StringUtils {
+
+    private StringUtils() {}
+
+    public static boolean isBalanced(String str) {
+<span class="fc" id="L10">        Stack&lt;Character&gt; stack = new Stack&lt;&gt;();</span>
+
+<span class="fc bfc" id="L12" title="All 2 branches covered.">        for (int i=0; i&lt;str.length() ; i++)</span>
+        {
+<span class="fc" id="L14">            char checked = str.charAt(i);</span>
+<span class="fc bfc" id="L15" title="All 6 branches covered.">            if (checked == '(' || checked == '[' || checked == '{') {</span>
+<span class="fc" id="L16">                stack.push(checked);</span>
+            }
+<span class="fc bfc" id="L18" title="All 8 branches covered.">            else if (!stack.isEmpty() &amp;&amp; (checked == ')' || checked == ']' || checked == '}'))</span>
+            {
+<span class="fc" id="L20">                char begin = stack.pop();</span>
+<span class="fc bfc" id="L21" title="All 12 branches covered.">                if ( !(</span>
+                    (checked == ')' &amp;&amp; begin == '(')
+                    ||
+                    (checked == ']' &amp;&amp; begin == '[')
+                    ||
+                    (checked == '}' &amp;&amp; begin == '{')
+                    )
+                    )
+                {
+<span class="fc" id="L30">                    return false;</span>
+                }
+<span class="fc" id="L32">            }</span>
+            else
+            {
+<span class="fc" id="L35">                return false;</span>
+            }
+        }
+        
+<span class="fc" id="L39">        return stack.isEmpty();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
